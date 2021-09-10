@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+use VDauchy\LaravelZeroPortable\Commands\MakeApp;
+use VDauchy\LaravelZeroPortable\Commands\MakeCommand;
+use VDauchy\LaravelZeroPortable\LaravelZeroPortable;
+
+$autoloader = require match(true) {
+    file_exists($path = ($basePath = __DIR__) . '/vendor/autoload.php') => $path,
+    file_exists($path = ($basePath = dirname(__DIR__)) . '/vendor/autoload.php') => $path,
+    file_exists($path = ($basePath = dirname(__DIR__, 4)) . '/vendor/autoload.php') => $path,
+    default => throw new Exception("Could not find autoloader.php")
+};
+
+exit(LaravelZeroPortable::buildDefault($basePath, [
+    MakeApp::class,
+    MakeCommand::class
+])->run());
